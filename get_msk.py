@@ -197,8 +197,8 @@ def main():
         decrypted_ms_mppe_send_key = decrypt_mppe_key(ms_mppe_send_key, secret, authenticator,)
 
         # Decode the first 32 bytes of 'decrypted_ms_mppe_recv_key' and 'decrypted_ms_mppe_send_key' as hexadecimal strings
-        decoded_ms_mppe_recv_key = hexlify(decrypted_ms_mppe_recv_key[:32]).encode()
-        decoded_ms_mppe_send_key = hexlify(decrypted_ms_mppe_send_key[:32]).encode()
+        decoded_ms_mppe_recv_key = hexlify(decrypted_ms_mppe_recv_key[:32]).decode()
+        decoded_ms_mppe_send_key = hexlify(decrypted_ms_mppe_send_key[:32]).decode()
 
         # Print the decrypted MS-MPPE-Recv-Key, decrypted MS-MPPE-Send-Key, and the master session key (MSK)
         print(f"MS-MPPE-Recv-Key:    {decoded_ms_mppe_recv_key}")
