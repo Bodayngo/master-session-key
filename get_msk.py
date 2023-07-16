@@ -177,7 +177,7 @@ def main():
             - Decrypt the 'ms_mppe_recv_key' and 'ms_mppe_send_key' using the 'decrypt_mppe_key()' function with the 'secret' and 'authenticator'.
             - Decode the first 32 bytes of 'decrypted_ms_mppe_recv_key' and 'decrypted_ms_mppe_send_key' as hexadecimal strings
             - Print the MS-MPPE-Send-Key, MS-MPPE-Send-Key, and the master session key (MSK).
-                - Concatenate the MS-MPPE-Recv-Key + MS-MPPE-Send-Key to get the MSK
+                - Concatenate the MS-MPPE-Recv-Key + MS-MPPE-Send-Key to get the MSK.
 
     """
     try:
