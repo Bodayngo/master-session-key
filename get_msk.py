@@ -165,10 +165,10 @@ def decrypt_mppe_key(ciphertext: bytes, secret: bytes, authenticator: bytes, pad
 
 def main():
     """
-    Main function for decrypting MS-MPPE-Send-Key and MS-MPPE-Recv-Key attributes of RADIUS messages.
+    Main function for calculating the MSK.
 
     Description:
-        This function serves as the entry point for decrypting the MS-MPPE-Send-Key and MS-MPPE-Recv-Key attributes of RADIUS messages.
+        This function serves as the entry point for calculating the MSK by decrypting the MS-MPPE-Send-Key and MS-MPPE-Recv-Key attributes of RADIUS messages.
 
         It follows the steps below to perform the decryption and derive the MSK:
             - Parse command-line arguments using the `parse_arguments()` function.
