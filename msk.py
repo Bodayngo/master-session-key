@@ -4,10 +4,13 @@ This script derives the MSK by decrypting the  MPPE keys in a RADIUS Access-Acce
 and the Request-Authenticator in the previous Access-Request.
 
 References:
+    802.11-2020 Standard
+        Sub-clause 12.7.1.3 - Pairwise key hierarchy
+        Sub-clause 12.7.1.6 - FT key hierarchy
     RFC 3748 - EAP (https://datatracker.ietf.org/doc/html/rfc3748)
         Section 7.10 - Key Derivation
     RFC 5216 - EAP-TLS Authentication Protocol (https://datatracker.ietf.org/doc/html/rfc5216)
-        Section 2.3 - Key Hierarcy
+        Section 2.3 - Key Hierarchy
     RFC 2548 - Microsoft Vendor-specific RADIUS Attributes (https://datatracker.ietf.org/doc/html/rfc2548)
         Section 2.4.2 - MS-MPPE-Send-Key
         Section 2.4.3 - MS-MPPE-Recv-Key
