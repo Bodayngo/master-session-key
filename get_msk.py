@@ -192,17 +192,17 @@ def main():
         authenticator = unhexlify(arguments.authenticator)
 
         # Decrypt the 'ms_mppe_recv_key' and 'ms_mppe_send_key' with the 'secret' and 'authenticator'
-        plaintext_recv_key = decrypt_mppe_key(ms_mppe_recv_key, secret, authenticator,)
-        plaintext_send_key = decrypt_mppe_key(ms_mppe_send_key, secret, authenticator,)
+        decrypted_ms_mppe_recv_key = decrypt_mppe_key(ms_mppe_recv_key, secret, authenticator,)
+        decrypted_ms_mppe_send_key = decrypt_mppe_key(ms_mppe_send_key, secret, authenticator,)
 
-        # Encode the first 32 bytes of the decrypted 'ms_mppe_recv_key' and 'ms_mppe_send_key' as hexadecimal strings
-        enc_recv_key = hexlify(plaintext_recv_key[:32]).decode()
-        enc_send_key = hexlify(plaintext_send_key[:32]).decode()
+        # Decode the first 32 bytes of the decrypted 'ms_mppe_recv_key' and 'ms_mppe_send_key' as hexadecimal strings
+        decoded_ms_mppe_recv_key = hexlify(decrypted_ms_mppe_recv_key[:32]).encode()
+        decoded_ms_mppe_send_key = hexlify(decrypted_ms_mppe_send_key[:32]).encode()
 
         # Print the Enc-RECV-Key, Enc-SEND-Key, and the master session key (MSK)
-        print(f"Enc-RECV-Key:       {enc_recv_key}")
-        print(f"Enc-SEND-Key:       {enc_send_key}")
-        print(f"Master Session Key: {enc_recv_key + enc_send_key}")
+        print(f"MS-MPPE-Recv-Key:    {decoded_ms_mppe_recv_key}")
+        print(f"MS-MPPE-Send-Key:    {decoded_ms_mppe_send_key}")
+        print(f"Master Session Key:  {decoded_ms_mppe_recv_key + decoded_ms_mppe_send_key}")
 
     except ValueError as e:
         # Handle specific ValueError (e.g., if the arguments are not in the expected format)
