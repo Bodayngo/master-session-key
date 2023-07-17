@@ -38,7 +38,6 @@ def parse_arguments() -> argparse.Namespace:
     Raises:
         ValueError: If 'secret' is not an ASCII string.
         ValueError: If 'authenticator', 'ms_mppe_recv_key', or 'ms_mppe_send_key' is not a hexadecimal string.
-
     """
     # Create an ArgumentParser object for parsing command-line arguments
     parser = argparse.ArgumentParser(description="Decrypt the MS-MPPE-Send-Key and MS-MPPE-Recv-Key attribute of RADIUS messages to derive the MSK.")
@@ -93,7 +92,6 @@ def decrypt_mppe_key(ciphertext: bytes, secret: bytes, authenticator: bytes, pad
         ValueError: If the 'authenticator' length is invalid.
         ValueError: If the 'salt' is invalid.
         ValueError: If the 'plaintext_key' is invalid.
-
     """
     BLOCK_SIZE = 16
     MAX_ENCRYPTED_DATA_LENGTH = 256
@@ -178,7 +176,6 @@ def calculate_msk(secret: bytes, authenticator: bytes, ms_mppe_recv_key: bytes, 
 def main():
     """
     Main function for calculating the MSK.
-
     """
     try:
         # Parse command-line arguments
