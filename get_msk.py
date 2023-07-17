@@ -117,7 +117,7 @@ def decrypt_mppe_key(ciphertext: bytes, secret: bytes, authenticator: bytes, pad
         ValueError: If the 'encrypted_data' length is invalid.
         ValueError: If the 'authenticator' length is invalid.
         ValueError: If the 'salt' is invalid.
-        ValueError: If the 'plaintext_key' is invalid.
+        ValueError: If the 'decrypted_data' is invalid.
 
     """
     # Separate the salt and encrypted data from the input ciphertext bytes
@@ -157,7 +157,7 @@ def decrypt_mppe_key(ciphertext: bytes, secret: bytes, authenticator: bytes, pad
     length, plaintext_key = decrypted_data[0], decrypted_data[1:]
     # Check if the length is valid and the padding is correct
     if (length > len(plaintext_key)) or (len(plaintext_key) - length > 15) or (plaintext_key[length:] != pad * (len(plaintext_key) - length)):
-        raise ValueError("Invalid plaintext key")
+        raise ValueError("Invalid decrypted data")
     
     # Return the plaintext key up to the specified length to remove appended padding
     return plaintext_key[:length]
