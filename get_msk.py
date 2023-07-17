@@ -129,7 +129,7 @@ def decrypt_mppe_key(ciphertext: bytes, secret: bytes, authenticator: bytes, pad
     # Check the length of the authenticator to ensure it is a multiple of 16
     if len(authenticator) % 16:
         raise ValueError("Invalid request authenticator length")
-    # Check the length of the salt and if the most significant bit (lefmost) is set (0x80)
+    # Check the length of the salt and if the most significant bit (leftmost) is set (0x80)
     if len(salt) != 2 or not salt[0] & 0x80:
         raise ValueError("Invalid salt")
     
