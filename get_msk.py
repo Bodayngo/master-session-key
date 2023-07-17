@@ -24,6 +24,9 @@ Usage:
 
 """
 
+__author__ = "Evan Wilkerson
+__version__ = "0.1.0"
+
 import argparse, re, struct
 from hashlib import md5
 
