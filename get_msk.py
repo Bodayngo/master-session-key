@@ -162,7 +162,7 @@ def calculate_msk(secret: bytes, authenticator: bytes, ms_mppe_recv_key: bytes, 
         ms_mppe_send_key (bytes): The MS-MPPE-Send-Key value in the Access-Accept.
 
     Returns:
-        bytes: The calculated Master Session Key (MSK).
+        master_session_key (bytes): The calculated Master Session Key (MSK).
     """
     # Decrypt the 'ms_mppe_recv_key' and 'ms_mppe_send_key' with the 'secret' and 'authenticator'
     decrypted_ms_mppe_recv_key = decrypt_mppe_key(ms_mppe_recv_key, secret, authenticator)
