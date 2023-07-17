@@ -150,6 +150,31 @@ def decrypt_mppe_key(ciphertext: bytes, secret: bytes, authenticator: bytes, pad
     return plaintext_key[:length]
 
 
+def calculate_msk(secret: bytes, authenticator: bytes, ms_mppe_recv_key: bytes, ms_mppe_send_key: bytes) -> bytes:
+    """
+    Calculate the Master Session Key (MSK) by decrypting the MS-MPPE-Recv-Key and MS-MPPE-Send-Key
+    using the provided secret and authenticator.
+
+    Args:
+        secret (bytes): The RADIUS shared secret.
+        authenticator (bytes): The Request-Authenticator value in the previous Access-Request packet.
+        ms_mppe_recv_key (bytes): The MS-MPPE-Recv-Key value in the Access-Accept.
+        ms_mppe_send_key (bytes): The MS-MPPE-Send-Key value in the Access-Accept.
+
+    Returns:
+        bytes: The calculated Master Session Key (MSK).
+    """
+    # Decrypt the 'ms_mppe_recv_key' and 'ms_mppe_send_key' with the 'secret' and 'authenticator'
+    decrypted_ms_mppe_recv_key = decrypt_mppe_key(ms_mppe_recv_key, secret, authenticator)
+    decrypted_ms_mppe_send_key = decrypt_mppe_key(ms_mppe_send_key, secret, authenticator)
+
+    # Concatenate the decrypted MS-MPPE-Recv-Key + MS-MPPE-Send-Key to get the MSK
+    master_session_key = decrypted_ms_mppe_recv_key[:32] + decrypted_ms_mppe_send_key[:32]
+
+    # Return the master session key (MSK)
+    return master_session_key
+
+
 def main():
     """
     Main function for calculating the MSK.
@@ -167,19 +192,11 @@ def main():
         ms_mppe_send_key = bytes.fromhex(arguments.ms_mppe_send_key)
         authenticator = bytes.fromhex(arguments.authenticator)
 
-        # Decrypt the 'ms_mppe_recv_key' and 'ms_mppe_send_key' with the 'secret' and 'authenticator'
-        decrypted_ms_mppe_recv_key = decrypt_mppe_key(ms_mppe_recv_key, secret, authenticator,)
-        decrypted_ms_mppe_send_key = decrypt_mppe_key(ms_mppe_send_key, secret, authenticator,)
+        # Calculate the MSK using the provided input
+        msk = calculate_msk(secret, authenticator, ms_mppe_recv_key, ms_mppe_send_key)
 
-        # Decode the first 32 bytes of 'decrypted_ms_mppe_recv_key' and 'decrypted_ms_mppe_send_key' as hexadecimal strings
-        decoded_ms_mppe_recv_key = bytes.hex(decrypted_ms_mppe_recv_key[:32])
-        decoded_ms_mppe_send_key = bytes.hex(decrypted_ms_mppe_send_key[:32])
-
-        # Print the decrypted/decoded MS-MPPE-Recv-Key and MS-MPPE-Send-Key
-        print(f"MS-MPPE-Recv-Key:    {decoded_ms_mppe_recv_key}")
-        print(f"MS-MPPE-Send-Key:    {decoded_ms_mppe_send_key}")
-        # Concatenate the decrypted/decoded MS-MPPE-Recv-Key + MS-MPPE-Send-Key to get the MSK and print the result
-        print(f"Master Session Key:  {decoded_ms_mppe_recv_key + decoded_ms_mppe_send_key}")
+        # Print the MSK in hexidecimal format
+        print(f"Master Session Key (MSK):  {msk.hex()}")
 
     except ValueError as e:
         # Handle specific ValueError (e.g., if the arguments are not in the expected format)
