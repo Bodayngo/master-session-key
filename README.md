@@ -1,8 +1,8 @@
 ## Contents
 * [Overview](https://github.com/Bodayngo/master-session-key/blob/development/README.md#overview)
-* Usage
-* Alternatives
-* References
+* [Usage](https://github.com/Bodayngo/master-session-key/blob/development/README.md#usage)
+* [Alternatives](https://github.com/Bodayngo/master-session-key/blob/development/README.md#alternatives)
+* [References](https://github.com/Bodayngo/master-session-key/blob/development/README.md#references)
 
 ## Overview
 The Master Session Key (MSK) is a key that is derived between a supplicant (wireless client) and authentication server (RADIUS server) which is then exported by the EAP method and sent to the authenticator (access point) in a RADIUS Access-Accept message so that it can be used to derive the PMK, which is subsequently used to derive the PTK for unicast encryption.
@@ -58,10 +58,10 @@ Done sniffing
 * 802.11-2020 Standard
   * Sub-clause 12.7.1.3 - Pairwise key hierarchy
   * Sub-clause 12.7.1.6 - FT key hierarchy
-* RFC 3748 - EAP (https://datatracker.ietf.org/doc/html/rfc3748)
+* [RFC 3748]((https://datatracker.ietf.org/doc/html/rfc3748)) - EAP
   * Section 7.10 - Key Derivation
-* RFC 5216 - EAP-TLS Authentication Protocol (https://datatracker.ietf.org/doc/html/rfc5216)
+* [RFC 5216]((https://datatracker.ietf.org/doc/html/rfc5216)) - EAP-TLS Authentication Protocol
   * Section 2.3 - Key Hierarchy
-* RFC 2548 - Microsoft Vendor-specific RADIUS Attributes (https://datatracker.ietf.org/doc/html/rfc2548)
+* [RFC 2548]((https://datatracker.ietf.org/doc/html/rfc2548)) - Microsoft Vendor-specific RADIUS Attributes
   * Section 2.4.2 - MS-MPPE-Send-Key
   * Section 2.4.3 - MS-MPPE-Recv-Key
