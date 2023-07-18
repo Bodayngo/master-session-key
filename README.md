@@ -1,4 +1,4 @@
-## Description
+## Overview
 The Master Session Key (MSK) is a key that is derived between a supplicant (wireless client) and authentication server (RADIUS server) which is then exported by the EAP method and sent to the authenticator (access point) in a RADIUS Access-Accept message so that it can be used to derive the PMK, which is subsequently used to derive the PTK for unicast encryption.
 
 The get_msk.py script calculates the Master Sesssion Key (MSK) for an 802.1X/EAP wireless authentication when passed the following input: 
@@ -23,7 +23,7 @@ Master Session Key (MSK):  96a8b3965f4615307d13812251e21a7970ffcf9bf4c4bc6543d00
 ```
 
 ## Alternatives
-The radsniff tool (available with freeradius) can also be used to decrypt the 
+The radsniff tool (available with freeradius) can also be used to calculate the MSK by decrypting the contents of 
 
 ## References
 * 802.11-2020 Standard
