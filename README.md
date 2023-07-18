@@ -11,6 +11,7 @@ The get_msk.py script calculates the Master Sesssion Key (MSK) for an 802.1X/EAP
 
 ![request-authenticator](https://github.com/Bodayngo/master-session-key/assets/97417803/f2e06f66-32b7-41b1-96c5-e9791ef93e12)
 
+
 ## Usage
 ```
 # Syntax
@@ -21,6 +22,7 @@ $ python3 get_msk.py radiussharedsecret 94f77e05a8610c7a2186f1a4d8d6fa3281926194
 
 Master Session Key (MSK):  7dca16f8d83d5d34d39034654c9bd84cc57beae90c7639b0291b7e0846b9dffa501097cddf665fccfac7933504e86325461ded33ba080066ab1d6ed314950c58
 ```
+
 
 ## Alternatives
 The radsniff tool (available with freeradius) can also be used to calculate the MSK by decrypting the MS-MPPE-Recv-Key and MS-MPPE-Send-Key when passed a packet capture file containing the RADIUS authentication exchange and the RADIUS shared secret. Once decrypted, concatenate the two (MS-MPPE-Recv-Key + MS-MPPE-Send-Key) to get the MSK.
