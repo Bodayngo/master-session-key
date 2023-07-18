@@ -5,6 +5,6 @@ The Master Session Key (MSK) is a key that is derived between a supplicant (wire
 
 The get_msk.py script calculates the Master Sesssion Key (MSK) for an 802.1X/EAP wireless authentication when passed the following input: 
 * The RADIUS shared secret that is configured on the access point and RADIUS server (ASCII string)
-* The MS-MPPE-Recv-Key in the RADIUS Access-Accept (hexidecimal string)
-* The MS-MPPE-Send-Key in the RADIUS Access-Accept (hexidecimal string)
-* The Request-Authenticator in the RADIUS Access-Request prior to the Access-Accept (hexidecimal string)
+* The MS-MPPE-Recv-Key field in the RADIUS Access-Accept (hexidecimal string)
+* The MS-MPPE-Send-Key field in the RADIUS Access-Accept (hexidecimal string)
+* The Request-Authenticator field in the RADIUS Access-Request prior to the Access-Accept (hexidecimal string)
