@@ -17,13 +17,34 @@ The get_msk.py script calculates the Master Sesssion Key (MSK) for an 802.1X/EAP
 $ python3 get_msk.py <radius_shared_secret> <ms-mppe-recv-key> <ms-mppe-send-key> <request-authenticator>
 
 # Example
-$ python3 get_msk.py radiussharedsecret e05f79561ade51446bacf921b68fc25a05ac9268d55f686860c6a04214586152183adcfb89b865f552da3b1af7f90445e871 ee7a3214ebda071b552a41dbcf8e42fdbd5189eaa445f95ff310a364fb066962000d303254a2e040d047f0d67dce9c6e1e7a 13bfb399bb1baae150bab9afcf5eb1c2
+$ python3 get_msk.py radiussharedsecret 94f77e05a8610c7a2186f1a4d8d6fa328192619455dee03142669e1a1ff583b3593284d31c985edc78892a0414e54e527d55 9d662d78d01092890b516531291542373db99da21ac9d8f58d8e2583318486a911c7edfe7f17457f81c6a4169948936dabe4 a0fcd2bd28f624724726135fc97d22d9
 
-Master Session Key (MSK):  96a8b3965f4615307d13812251e21a7970ffcf9bf4c4bc6543d0008c0e6fdce2070b050e3d294ca627b0e98dd731f3e50f09a1912d6b073ce40d13e620a26cef
+Master Session Key (MSK):  7dca16f8d83d5d34d39034654c9bd84cc57beae90c7639b0291b7e0846b9dffa501097cddf665fccfac7933504e86325461ded33ba080066ab1d6ed314950c58
 ```
 
 ## Alternatives
 The radsniff tool (available with freeradius) can also be used to calculate the MSK by decrypting the MS-MPPE-Recv-Key and MS-MPPE-Send-Key when passed a packet capture file containing the RADIUS authentication exchange and the RADIUS shared secret. Once decrypted, concatenate the two (MS-MPPE-Recv-Key + MS-MPPE-Send-Key) to get the MSK.
+```
+$ radsniff -x -I example_wired_radius.pcap -s radiussharedsecret
+
+----- output omitted for brevity -----
+
+2023-07-17 13:08:17.707659 (20) Access-Accept Id 39 example_wired_radius.pcap:10.1.10.1:47554 <- 10.1.20.60:1812 +0.185 +0.000
+        User-Name = "client.lab.local"
+        Framed-MTU = 994
+        Session-Timeout = 3600
+        Tunnel-Type:0 = VLAN
+        Tunnel-Medium-Type:0 = IEEE-802
+        Tunnel-Private-Group-Id:0 = "100"
+        EAP-Message = 0x03c50004
+        Message-Authenticator = 0x17ea80ec815ac50669da3acde6fb6df1
+        MS-MPPE-Send-Key = 0x501097cddf665fccfac7933504e86325461ded33ba080066ab1d6ed314950c58
+        MS-MPPE-Recv-Key = 0x7dca16f8d83d5d34d39034654c9bd84cc57beae90c7639b0291b7e0846b9dffa
+        Authenticator-Field = 0xcf228335f114bb4e1fd555b2a2ab5bac
+Done reading packets (example_wired_radius.pcap)
+Done sniffing
+```
+
 
 ## References
 * 802.11-2020 Standard
