@@ -200,7 +200,7 @@ def main():
         msk = calculate_msk(secret, authenticator, ms_mppe_recv_key, ms_mppe_send_key)
 
         # Print the MSK in hexidecimal format
-        print(f"Master Session Key (MSK):  {msk.hex()}")
+        print(f"\nMaster Session Key (MSK):  {msk.hex()}")
 
     except ValueError as e:
         # Handle specific ValueError (e.g., if the arguments are not in the expected format)
