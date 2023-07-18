@@ -12,3 +12,6 @@ The get_msk.py script calculates the Master Sesssion Key (MSK) for an 802.1X/EAP
 ![request-authenticator](https://github.com/Bodayngo/master-session-key/assets/97417803/f2e06f66-32b7-41b1-96c5-e9791ef93e12)
 
 ## Usage
+```
+python3 get_msk.py <radius_shared_secret> <ms-mppe-recv-key> <ms-mppe-send-key> <request-authenticator>
+```
