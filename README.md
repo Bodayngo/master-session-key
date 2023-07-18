@@ -23,6 +23,7 @@ Master Session Key (MSK):  96a8b3965f4615307d13812251e21a7970ffcf9bf4c4bc6543d00
 ```
 
 ## Alternatives
+The radsniff tool (available with freeradius) can also be used to decrypt the 
 
 ## References
 * 802.11-2020 Standard
