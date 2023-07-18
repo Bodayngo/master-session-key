@@ -8,6 +8,7 @@ The get_msk.py script calculates the Master Sesssion Key (MSK) for an 802.1X/EAP
 * The Request-Authenticator field in the RADIUS Access-Request prior to the Access-Accept (hexidecimal string)
 
 ![ms-mppe-keys](https://github.com/Bodayngo/master-session-key/assets/97417803/c3f7c56b-f844-4214-b753-cab5e3c57b45)
+
 ![request-authenticator](https://github.com/Bodayngo/master-session-key/assets/97417803/f2e06f66-32b7-41b1-96c5-e9791ef93e12)
 
 ## Usage
