@@ -55,13 +55,13 @@ Done sniffing
 
 
 ## References
-* 802.11-2020 Standard
+* [802.11-2020 Standard](https://ieeexplore.ieee.org/document/9363693)
   * Sub-clause 12.7.1.3 - Pairwise key hierarchy
   * Sub-clause 12.7.1.6 - FT key hierarchy
-* [RFC 3748](https://datatracker.ietf.org/doc/html/rfc3748) - EAP
+* [RFC 3748 - EAP](https://datatracker.ietf.org/doc/html/rfc3748)
   * Section 7.10 - Key Derivation
-* [RFC 5216](https://datatracker.ietf.org/doc/html/rfc5216) - EAP-TLS Authentication Protocol
+* [RFC 5216 - EAP-TLS Authentication Protocol](https://datatracker.ietf.org/doc/html/rfc5216)
   * Section 2.3 - Key Hierarchy
-* [RFC 2548](https://datatracker.ietf.org/doc/html/rfc2548) - Microsoft Vendor-specific RADIUS Attributes
+* [RFC 2548 - Microsoft Vendor-specific RADIUS Attributes](https://datatracker.ietf.org/doc/html/rfc2548)
   * Section 2.4.2 - MS-MPPE-Send-Key
   * Section 2.4.3 - MS-MPPE-Recv-Key
