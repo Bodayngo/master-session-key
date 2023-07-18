@@ -23,7 +23,7 @@ Master Session Key (MSK):  96a8b3965f4615307d13812251e21a7970ffcf9bf4c4bc6543d00
 ```
 
 ## Alternatives
-The radsniff tool (available with freeradius) can also be used to calculate the MSK by decrypting the contents of 
+The radsniff tool (available with freeradius) can also be used to calculate the MSK by decrypting the MS-MPPE-Recv-Key and MS-MPPE-Send-Key when passed a packet capture file containing the RADIUS authentication exchange and the RADIUS shared secret. Once decrypted, concatenate the two (MS-MPPE-Recv-Key + MS-MPPE-Send-Key) to get the MSK.
 
 ## References
 * 802.11-2020 Standard
