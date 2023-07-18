@@ -31,7 +31,7 @@ Master Session Key (MSK):  7dca16f8d83d5d34d39034654c9bd84cc57beae90c7639b0291b7
 
 
 ## Alternatives
-The radsniff tool (available with freeradius) can also be used to calculate the MSK by decrypting the MS-MPPE-Recv-Key and MS-MPPE-Send-Key when passed a packet capture file containing the RADIUS authentication exchange and the RADIUS shared secret. Once decrypted, concatenate the two (MS-MPPE-Recv-Key + MS-MPPE-Send-Key) to get the MSK.
+The [radsniff](https://freeradius.org/radiusd/man/radsniff.html) tool (available with freeradius) can also be used to calculate the MSK by decrypting the MS-MPPE-Recv-Key and MS-MPPE-Send-Key when passed a packet capture file containing the RADIUS authentication exchange and the RADIUS shared secret. Once decrypted, concatenate the two (MS-MPPE-Recv-Key + MS-MPPE-Send-Key) to get the MSK.
 ```
 $ radsniff -x -I example_wired_radius.pcap -s radiussharedsecret
 
