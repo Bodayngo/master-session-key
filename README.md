@@ -21,3 +21,17 @@ $ python3 get_msk.py radiussharedsecret e05f79561ade51446bacf921b68fc25a05ac9268
 
 Master Session Key (MSK):  96a8b3965f4615307d13812251e21a7970ffcf9bf4c4bc6543d0008c0e6fdce2070b050e3d294ca627b0e98dd731f3e50f09a1912d6b073ce40d13e620a26cef
 ```
+
+## Alternatives
+
+## References
+* 802.11-2020 Standard
+  * Sub-clause 12.7.1.3 - Pairwise key hierarchy
+  * Sub-clause 12.7.1.6 - FT key hierarchy
+* RFC 3748 - EAP (https://datatracker.ietf.org/doc/html/rfc3748)
+  * Section 7.10 - Key Derivation
+* RFC 5216 - EAP-TLS Authentication Protocol (https://datatracker.ietf.org/doc/html/rfc5216)
+  * Section 2.3 - Key Hierarchy
+* RFC 2548 - Microsoft Vendor-specific RADIUS Attributes (https://datatracker.ietf.org/doc/html/rfc2548)
+  * Section 2.4.2 - MS-MPPE-Send-Key
+  * Section 2.4.3 - MS-MPPE-Recv-Key
