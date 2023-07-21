@@ -50,7 +50,7 @@ def parse_arguments() -> argparse.Namespace:
     """
     # Create an ArgumentParser object for parsing command-line arguments
     parser = argparse.ArgumentParser(
-        description="Decrypt the MS-MPPE-Send-Key and MS-MPPE-Recv-Key attribute of RADIUS messages to derive the MSK."
+        description="Calculate the master session key (MSK)."
     )
 
     # Add the 'radius_shared_secret' argument to the parser, specifying it as a required ASCII string
