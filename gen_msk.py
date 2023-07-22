@@ -7,11 +7,13 @@ References:
     802.11-2020 Standard
         Sub-clause 12.7.1.3 - Pairwise key hierarchy
         Sub-clause 12.7.1.6 - FT key hierarchy
-    RFC 3748 - EAP (https://datatracker.ietf.org/doc/html/rfc3748)
+    RFC 3748 - EAP
         Section 7.10 - Key Derivation
-    RFC 5216 - EAP-TLS Authentication Protocol (https://datatracker.ietf.org/doc/html/rfc5216)
+    RFC 5216 - EAP-TLS Authentication Protocol
         Section 2.3 - Key Hierarchy
-    RFC 2548 - Microsoft Vendor-specific RADIUS Attributes (https://datatracker.ietf.org/doc/html/rfc2548)
+    RFC 2865 - Remote Authentication Dial In User Service (RADIUS)
+        Section 3 - Packet Format
+    RFC 2548 - Microsoft Vendor-specific RADIUS Attributes
         Section 2.4.2 - MS-MPPE-Send-Key
         Section 2.4.3 - MS-MPPE-Recv-Key
 
@@ -26,7 +28,7 @@ Usage:
 """
 
 __author__ = "Evan Wilkerson"
-__version__ = "0.1.1"
+__version__ = "0.1.2"
 
 import argparse
 import re
@@ -107,6 +109,32 @@ def parse_arguments() -> argparse.Namespace:
     return args
 
 
+def xor_bits(byte_str1: bytes, byte_str2: bytes, byte_order='big') -> bytes:
+    """
+    Perform a bitwise XOR operation on two byte strings.
+
+    Args:
+        byte_str1 (bytes): The first byte string.
+        byte_str2 (bytes): The second byte string.
+        byteorder (str, optional): The byte order for both input byte strings and the result.
+                                   Defaults to 'big'.
+
+    Returns:
+        bytes: The result of the XOR operation as a byte string.
+
+    """
+    # Determine the length of the result byte string based on the longer input byte string.
+    result_length = max(len(byte_str1), len(byte_str2))
+
+    # Perform the XOR operation on the shared bytes.
+    result_int = int.from_bytes(byte_str1, byteorder=byte_order) ^ int.from_bytes(byte_str2, byteorder=byte_order)
+
+    # Convert the result integer back to a byte string using the appropriate length and byte order.
+    result_bytes = result_int.to_bytes(result_length, byteorder=byte_order)
+
+    return result_bytes
+
+
 def decrypt_mppe_key(
     radius_shared_secret: bytes,
     encrypted_ms_mppe_key: bytes,
@@ -135,27 +163,36 @@ def decrypt_mppe_key(
     MAX_ENCRYPTED_DATA_LENGTH = 256
     SALT_LENGTH = 2
 
-    # Separate the salt and encrypted data from the input encrypted MS-MPPE-Key
+    # Separate the salt and encrypted data from the input encrypted MS-MPPE-Key value
     salt, encrypted_data = (
         encrypted_ms_mppe_key[:SALT_LENGTH],
         encrypted_ms_mppe_key[SALT_LENGTH:],
     )
 
-    # Check the length of the encrypted data to ensure it is a multiple of BLOCK_SIZE
+    # Validate the Request-Authenticator bytes
     if (
-        len(encrypted_data) % BLOCK_SIZE != 0 or
-        len(encrypted_data) > MAX_ENCRYPTED_DATA_LENGTH
+        # Check if the length of the Request-Authenticator is 16 bytes
+        len(request_authenticator) != 16 or
+        # Check if the length of the Request-Authenticator is a multiple of BLOCK_SIZE
+        len(request_authenticator) % BLOCK_SIZE != 0
     ):
-        raise ValueError("Invalid encrypted data length")
-    # Check the length of the Request-Authenticator to ensure it is a multiple of BLOCK_SIZE
-    if len(request_authenticator) % BLOCK_SIZE != 0:
-        raise ValueError("Invalid Request-Authenticator length")
-    # Check the length of the salt and if the most significant bit (leftmost) is set (0x80)
+        raise ValueError("Invalid Request-Authenticator")
+    # Validate the salt bytes
     if (
+        # Check if the length of the salt is equal to the expected salt length
         len(salt) != SALT_LENGTH or 
+        # Check if the most significant bit (leftmost) is set
         not salt[0] & 0x80
     ):
-        raise ValueError("Invalid salt")
+        raise ValueError("Invalid salt in MS-MPPE-Key")
+    # Validate the encrypted data bytes
+    if (
+        # Check if the length of the encrypted data is less than or equal to MAX_ENCRYPTED_DATA_LENGTH
+        len(encrypted_data) > MAX_ENCRYPTED_DATA_LENGTH or
+        # Check if the length of the encrypted data is a multiple of BLOCK_SIZE
+        len(encrypted_data) % BLOCK_SIZE != 0
+    ):
+        raise ValueError("Invalid encrypted key data in MS-MPPE-Key")
 
     # Initialize an empty list to store intermediate decryption results
     decrypted_data_blocks = []
@@ -167,11 +204,9 @@ def decrypt_mppe_key(
     for i in range(0, len(encrypted_data), BLOCK_SIZE):
         encrypted_block = encrypted_data[i : i + BLOCK_SIZE]
         # Compute the MD5 hash of the hash input
-        hash_value = int(md5(hash_input).hexdigest(), 16)
+        hash_value = md5(hash_input).digest()
         # XOR the hash result with the current encrypted block to obtain the intermediate decrypted block
-        decrypted_block = bytes.fromhex(
-            "%032x" % (hash_value ^ int.from_bytes(encrypted_block, "big"))
-        )
+        decrypted_block = xor_bits(hash_value, encrypted_block)
         # Append the intermediate decrypted block to the list
         decrypted_data_blocks.append(decrypted_block)
         # Update the hash input by concatenating the secret and the current encrypted block
@@ -185,10 +220,13 @@ def decrypt_mppe_key(
         struct.unpack("!B", decrypted_data[:1])[0],
         decrypted_data[1:],
     )
-    # Check if the length is valid and the padding is correct
+    # Validate the decrypted data
     if (
+        # Check if the plaintext key length greater than the padded plaintext key
         plaintext_key_length > len(padded_plaintext_key) or
+        # Check if the length of the appended padding is less than BLOCK_SIZE
         len(padded_plaintext_key) - plaintext_key_length > BLOCK_SIZE - 1 or
+        # Check if the appended padding is equal to PAD * the length of padding
         padded_plaintext_key[plaintext_key_length:] != PAD * (len(padded_plaintext_key) - plaintext_key_length)
     ):
         raise ValueError("Invalid decrypted data")
@@ -261,7 +299,8 @@ def main():
         )
 
         # Print the MSK in hexidecimal format
-        print(f"\nMaster Session Key (MSK):  {msk.hex()}")
+        print()
+        print(f"Master Session Key (MSK):  {msk.hex()}")
 
     except ValueError as e:
         # Handle ValueError exceptions
