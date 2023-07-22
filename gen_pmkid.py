@@ -43,7 +43,7 @@ SHA methods and associated AKM suite types:
     
 Usage:
     python3 gen_pmkid.py <pmk> <aa> <spa>
-        - pmk:    The PMK, as a hexadecimal string
+        - pmk:    The PMK (or MPMK if using FT), as a hexadecimal string
         - aa:     The Authenticator Address (BSSID MAC address), as six groups of two hexadecimal digits, separated by hyphens, colons, or without a separator
         - spa:    The Supplicant Address (client MAC address), as six groups of two hexadecimal digits, separated by hyphens, colons, or without a separator
 
@@ -73,12 +73,12 @@ def parse_arguments() -> argparse.Namespace:
     """
     # Create an ArgumentParser object for parsing command-line arguments
     parser = argparse.ArgumentParser(
-        description="Decrypt the MS-MPPE-Send-Key and MS-MPPE-Recv-Key attribute of RADIUS messages to derive the MSK."
+        description="Calculate the PMKID."
     )
 
     # Add the 'pmk' argument to the parser, specifying it as a required hexadecimal string
     parser.add_argument(
-        "pmk", type=str, help="The pairwise master key (PMK), as a hexadecimal string"
+        "pmk", type=str, help="The pairwise master key (PMK), or master PMK (MPMK) if using FT, as a hexadecimal string"
     )
     # Add the 'aa' argument to the parser, specifying it as a required MAC address string
     parser.add_argument(
