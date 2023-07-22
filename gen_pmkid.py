@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 """
+This script calculates the PMKID using the pairwise master key (PMK), authenticator address (AA) 
+and the supplicant address (SPA). Different PMKIDs are calculated using SHA-1, SHA-256, and SHA-384.
+
 References:
     802.11-2020 Standard
         Sub-clause 12.7.1.3 - Pairwise key hierarchy
@@ -39,7 +42,7 @@ SHA methods and associated AKM suite types:
         00-0F-AC:17 - FT authentication over FILS with SHA-384 and AES-SIV-512
     
 Usage:
-    python3 get_pmkid.py <pmk> <aa> <spa>
+    python3 gen_pmkid.py <pmk> <aa> <spa>
         - pmk:    The PMK, as a hexadecimal string
         - aa:     The Authenticator Address (BSSID MAC address), as six groups of two hexadecimal digits, separated by hyphens, colons, or without a separator
         - spa:    The Supplicant Address (client MAC address), as six groups of two hexadecimal digits, separated by hyphens, colons, or without a separator
