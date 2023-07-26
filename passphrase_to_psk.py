@@ -96,17 +96,27 @@ def main():
     Main entry point of the script.
 
     """
-    # Parse command line arguments
-    arguments = parse_arguments()
-    passphrase = arguments.passphrase
-    ssid = arguments.ssid
+    try:
+        # Parse command line arguments
+        arguments = parse_arguments()
+        passphrase = arguments.passphrase
+        ssid = arguments.ssid
 
-    # Calculate the PSK using the provided input
-    psk = calculate_psk(passphrase, ssid)
+        # Calculate the PSK using the provided input
+        psk = calculate_psk(passphrase, ssid)
+        
+        # Print the PSK
+        print()
+        print(f"PSK: {psk.hex()}")
     
-    # Print the PSK
-    print()
-    print(f"PSK: {psk.hex()}")
+    except ValueError as e:
+        # Handle ValueError exceptions
+        print(e)
+
+    except Exception as e:
+        # Handle any other unexpected exceptions
+        print(e)
+
 
 if __name__ == "__main__":
     main()
