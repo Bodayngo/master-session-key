@@ -1,3 +1,7 @@
+"""
+python3 -m unittest tests/test_gen_msk.py
+"""
+
 import unittest
 from gen_msk import xor_bits
 from gen_msk import decrypt_mppe_key
