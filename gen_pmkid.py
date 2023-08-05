@@ -20,11 +20,13 @@ SHA methods and associated AKM suite types:
         00-0F-AC:5 - Authentication negotiated over IEEE Std 802.1X
         00-0F-AC:6 - PSK
         00-0F-AC:11 - Authentication negotiated over IEEE Std 802.1X using a Suite B compliant EAP method supporting SHA-256
+            - uses KCK instead of PMK as input
         00-0F-AC:14 - Authentication negotiated over IEEE Std 802.1X
         00-0F-AC:16 - Authentication negotiated over IEEE Std 802.1X
 
     SHA-384
         00-0F-AC:12 - Authentication negotiated over IEEE Std 802.1X using a CNSA Suite compliant EAP method
+            - uses KCK instead of PMK as input
         00-0F-AC:13 - FT authentication negotiated over IEEE Std 802.1X (PMKID for cached MPMK)
         00-0F-AC:15 - Authentication negotiated over IEEE Std 802.1X
         00-0F-AC:17 - Authentication negotiated over IEEE Std 802.1X
