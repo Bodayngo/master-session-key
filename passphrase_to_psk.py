@@ -107,7 +107,7 @@ def main():
         
         # Print the PSK
         print()
-        print(f"PSK: {psk.hex()}")
+        print(f"PSK/PMK: {psk.hex()}")
     
     except ValueError as e:
         # Handle ValueError exceptions

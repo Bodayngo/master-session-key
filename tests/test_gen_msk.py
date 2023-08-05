@@ -7,7 +7,6 @@ from gen_msk import xor_bits
 from gen_msk import decrypt_mppe_key
 
 
-
 test_radius_shared_secret = 'radiussharedsecret'
 test_encrypted_ms_mppe_recv_key = '94f77e05a8610c7a2186f1a4d8d6fa328192619455dee03142669e1a1ff583b3593284d31c985edc78892a0414e54e527d55'
 test_encrypted_ms_mppe_send_key = '9d662d78d01092890b516531291542373db99da21ac9d8f58d8e2583318486a911c7edfe7f17457f81c6a4169948936dabe4'
@@ -15,6 +14,7 @@ test_request_authenticator = 'a0fcd2bd28f624724726135fc97d22d9'
 
 decrypted_ms_mppe_recv_key = '7dca16f8d83d5d34d39034654c9bd84cc57beae90c7639b0291b7e0846b9dffa'
 decrypted_ms_mppe_send_key = '501097cddf665fccfac7933504e86325461ded33ba080066ab1d6ed314950c58'
+
 
 class TestGenMskFunctions(unittest.TestCase):
 
