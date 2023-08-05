@@ -109,7 +109,7 @@ def parse_arguments() -> argparse.Namespace:
     return args
 
 
-def xor_bits(byte_str1: bytes, byte_str2: bytes, byte_order='big') -> bytes:
+def xor_bits(byte_str1: bytes, byte_str2: bytes, byte_order="big") -> bytes:
     """
     Perform a bitwise XOR operation on two byte strings.
 
@@ -126,12 +126,17 @@ def xor_bits(byte_str1: bytes, byte_str2: bytes, byte_order='big') -> bytes:
     # Determine the length of the result byte string based on the longer input byte string.
     result_length = max(len(byte_str1), len(byte_str2))
 
+    # Convert bytes to integer representation
+    int1 = int.from_bytes(byte_str1, byteorder=byte_order)
+    int2 = int.from_bytes(byte_str2, byteorder=byte_order)
+
     # Perform the XOR operation on the shared bytes.
-    result_int = int.from_bytes(byte_str1, byteorder=byte_order) ^ int.from_bytes(byte_str2, byteorder=byte_order)
+    result_int = int1 ^ int2
 
     # Convert the result integer back to a byte string using the appropriate length and byte order.
     result_bytes = result_int.to_bytes(result_length, byteorder=byte_order)
 
+    # Return the XOR result bytes
     return result_bytes
 
 
@@ -172,7 +177,8 @@ def decrypt_mppe_key(
     # Validate the Request-Authenticator bytes
     if (
         # Check if the length of the Request-Authenticator is 16 bytes
-        len(request_authenticator) != 16 or
+        len(request_authenticator) != 16
+        or
         # Check if the length of the Request-Authenticator is a multiple of BLOCK_SIZE
         len(request_authenticator) % BLOCK_SIZE != 0
     ):
@@ -180,7 +186,8 @@ def decrypt_mppe_key(
     # Validate the salt bytes
     if (
         # Check if the length of the salt is equal to the expected salt length
-        len(salt) != SALT_LENGTH or 
+        len(salt) != SALT_LENGTH
+        or
         # Check if the most significant bit (leftmost) is set
         not salt[0] & 0x80
     ):
@@ -188,7 +195,8 @@ def decrypt_mppe_key(
     # Validate the encrypted data bytes
     if (
         # Check if the length of the encrypted data is less than or equal to MAX_ENCRYPTED_DATA_LENGTH
-        len(encrypted_data) > MAX_ENCRYPTED_DATA_LENGTH or
+        len(encrypted_data) > MAX_ENCRYPTED_DATA_LENGTH
+        or
         # Check if the length of the encrypted data is a multiple of BLOCK_SIZE
         len(encrypted_data) % BLOCK_SIZE != 0
     ):
@@ -223,11 +231,14 @@ def decrypt_mppe_key(
     # Validate the decrypted data
     if (
         # Check if the plaintext key length greater than the padded plaintext key
-        plaintext_key_length > len(padded_plaintext_key) or
+        plaintext_key_length > len(padded_plaintext_key)
+        or
         # Check if the length of the appended padding is less than BLOCK_SIZE
-        len(padded_plaintext_key) - plaintext_key_length > BLOCK_SIZE - 1 or
+        len(padded_plaintext_key) - plaintext_key_length > BLOCK_SIZE - 1
+        or
         # Check if the appended padding is equal to PAD * the length of padding
-        padded_plaintext_key[plaintext_key_length:] != PAD * (len(padded_plaintext_key) - plaintext_key_length)
+        padded_plaintext_key[plaintext_key_length:]
+        != PAD * (len(padded_plaintext_key) - plaintext_key_length)
     ):
         raise ValueError("Invalid decrypted data")
 
@@ -262,9 +273,11 @@ def calculate_msk(
     decrypted_ms_mppe_recv_key = decrypt_mppe_key(
         radius_shared_secret, encrypted_ms_mppe_recv_key, request_authenticator
     )
+    print(decrypted_ms_mppe_recv_key.hex())
     decrypted_ms_mppe_send_key = decrypt_mppe_key(
         radius_shared_secret, encrypted_ms_mppe_send_key, request_authenticator
     )
+    print(decrypted_ms_mppe_send_key.hex())
 
     # Concatenate the decrypted MS-MPPE-Keys to create the MSK
     master_session_key = (
