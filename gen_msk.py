@@ -273,11 +273,9 @@ def calculate_msk(
     decrypted_ms_mppe_recv_key = decrypt_mppe_key(
         radius_shared_secret, encrypted_ms_mppe_recv_key, request_authenticator
     )
-    print(decrypted_ms_mppe_recv_key.hex())
     decrypted_ms_mppe_send_key = decrypt_mppe_key(
         radius_shared_secret, encrypted_ms_mppe_send_key, request_authenticator
     )
-    print(decrypted_ms_mppe_send_key.hex())
 
     # Concatenate the decrypted MS-MPPE-Keys to create the MSK
     master_session_key = (
