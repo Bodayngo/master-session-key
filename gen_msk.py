@@ -340,10 +340,7 @@ def main():
         arguments = parse_arguments()
 
         # Convert the arguments from the command line to bytes
-        radius_shared_secret = bytes(
-            arguments.secret,
-            "ascii"
-        )
+        radius_shared_secret = bytes(arguments.secret, "ascii")
         encrypted_ms_mppe_recv_key = bytes.fromhex(
             arguments.mppe_recv_key
         )
