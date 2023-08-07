@@ -20,7 +20,7 @@ References:
         Section 2.4.3 - MS-MPPE-Recv-Key
 
 Usage:
-    python3 get_msk.py <secret> <mppe_recv_key> <mppe_send_key> <uthenticator>
+    python3 get_msk.py <secret> <mppe_recv_key> <mppe_send_key> <authenticator>
 
         - secret:
             The RADIUS shared secret, as an ASCII string
@@ -120,13 +120,17 @@ def xor_bits(byte_str1: bytes, byte_str2: bytes, byte_order="big") -> bytes:
     """Perform a bitwise XOR operation on two byte strings.
 
     Args:
-        byte_str1 (bytes): The first byte string.
-        byte_str2 (bytes): The second byte string.
-        byteorder (str, optional): The byte order for both input byte strings
-            and the result. Defaults to 'big'.
+        byte_str1 (bytes):
+            - The first byte string.
+        byte_str2 (bytes):
+            - The second byte string.
+        byteorder (str, optional):
+            - The byte order for both input byte strings
+              and the result. Defaults to 'big'.
 
     Returns:
-        bytes: The result of the XOR operation as a byte string.
+        bytes:
+            - The result of the XOR operation as a byte string.
 
     """
     result_length = max(len(byte_str1), len(byte_str2))
@@ -183,13 +187,15 @@ def decrypt_mppe_key(
             - The Request-Authenticator used in the decryption process.
 
     Returns:
-        bytes: The decrypted MPPE key.
+        bytes:
+            - The decrypted MPPE key.
 
     Raises:
-        ValueError: If the 'encrypted_data' length is invalid.
-        ValueError: If the 'request_authenticator' length is invalid.
-        ValueError: If the 'salt' is invalid.
-        ValueError: If the 'decrypted_data' is invalid.
+        ValueError:
+            - If the 'encrypted_data' length is invalid.
+            - If the 'request_authenticator' length is invalid.
+            - If the 'salt' is invalid.
+            - If the 'decrypted_data' is invalid.
 
     """
     PAD = b"\x00"
@@ -277,7 +283,8 @@ def calculate_msk(
               Access-Request packet.
 
     Returns:
-        str: The calculated MSK, hexadecimal format.
+        str:
+            - The calculated MSK, in hexadecimal format.
 
     """
     decrypted_ms_mppe_recv_key = decrypt_mppe_key(
