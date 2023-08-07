@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
-"""
-This script calculates the MSK by decrypting the  MPPE keys in a RADIUS Access-Accept using the RADIUS shared secret 
-and the Request-Authenticator in the previous Access-Request.
+"""Calculate MSK.
+
+This script calculates the MSK by decrypting the  MPPE keys in a RADIUS
+Access-Accept using the RADIUS shared secret and the Request-Authenticator
+in the previous Access-Request.
 
 References:
     802.11-2020 Standard
@@ -18,12 +20,19 @@ References:
         Section 2.4.3 - MS-MPPE-Recv-Key
 
 Usage:
-    python3 get_msk.py <radius_shared_secret> <encrypted_ms_mppe_recv_key> <encrypted_ms_mppe_send_key> <request_authenticator>
+    python3 get_msk.py <secret> <mppe_recv_key> <mppe_send_key> <uthenticator>
 
-        - radius_shared_secret:         The RADIUS shared secret configured on both the AP and RADIUS server, as an ASCII string
-        - encrypted_ms_mppe_recv_key:   The MS-MPPE-Recv-Key value in the Access-Accept, as a hexidecimal string
-        - encrypted_ms_mppe_send_key:   The MS-MPPE-Send-Key value in the Access-Accept, as a hexidecimal string
-        - request_authenticator:        The Request-Authenticator value in the previous Access-Request, as a hexidecimal string
+        - secret:
+            The RADIUS shared secret, as an ASCII string
+        - mppe_recv_key:
+            The MS-MPPE-Recv-Key value in the Access-Accept,
+            as a hexidecimal string
+        - mppe_send_key:
+            The MS-MPPE-Send-Key value in the Access-Accept,
+            as a hexidecimal string
+        - authenticator:
+            The Request-Authenticator value in the previous Access-Request,
+            as a hexidecimal string
 
 """
 
@@ -37,17 +46,18 @@ from hashlib import md5
 
 
 def parse_arguments() -> argparse.Namespace:
-    """
-    Parse command-line arguments.
+    """Parse command-line arguments.
 
     Returns:
-        argparse.Namespace: An object containing the parsed command-line arguments.
+        argparse.Namespace:
+            - An object containing the parsed command-line arguments.
 
     Raises:
-        ValueError: If 'radius_shared_secret' is not an ASCII string.
-        ValueError: If 'encrypted_ms_mppe_recv_key' is not a hexadecimal string.
-        ValueError: If 'encrypted_ms_mppe_send_key' is not a hexadecimal string.
-        ValueError: If 'request_authenticator' is not a hexadecimal string.
+        ValueError:
+            - If 'radius_shared_secret' is not an ASCII string.
+            - If 'encrypted_ms_mppe_recv_key' is not a hexadecimal string.
+            - If 'encrypted_ms_mppe_send_key' is not a hexadecimal string.
+            - If 'request_authenticator' is not a hexadecimal string.
 
     """
     parser = argparse.ArgumentParser(
@@ -62,23 +72,26 @@ def parse_arguments() -> argparse.Namespace:
     parser.add_argument(
         "encrypted_ms_mppe_recv_key",
         type=str,
-        help= \
-            "The encrypted MS-MPPE-Recv-Key value in the Access-Accept " \
-            "packet, as a hexidecimal string" \
+        help="""\
+            The encrypted MS-MPPE-Recv-Key value in the Access-Accept
+            packet, as a hexidecimal string
+            """,
     )
     parser.add_argument(
         "encrypted_ms_mppe_send_key",
         type=str,
-        help= \
-            "The encrypted MS-MPPE-Send-Key value in the Access-Accept " \
-            "packet, as a hexidecimal string" \
+        help="""\
+            The encrypted MS-MPPE-Send-Key value in the Access-Accept
+            packet, as a hexidecimal string
+            """,
     )
     parser.add_argument(
         "request_authenticator",
         type=str,
-        help= \
-            "The Request-Authenticator value in the previous Access-Request " \
-            "packet, as a hexidecimal string"\
+        help="""\
+            The Request-Authenticator value in the previous Access-Request
+            packet, as a hexidecimal string
+            """,
     )
 
     args = parser.parse_args()
@@ -104,13 +117,12 @@ def parse_arguments() -> argparse.Namespace:
 
 
 def xor_bits(byte_str1: bytes, byte_str2: bytes, byte_order="big") -> bytes:
-    """
-    Perform a bitwise XOR operation on two byte strings.
+    """Perform a bitwise XOR operation on two byte strings.
 
     Args:
         byte_str1 (bytes): The first byte string.
         byte_str2 (bytes): The second byte string.
-        byteorder (str, optional): The byte order for both input byte strings 
+        byteorder (str, optional): The byte order for both input byte strings
             and the result. Defaults to 'big'.
 
     Returns:
@@ -134,7 +146,8 @@ def decrypt_mppe_key(
     encrypted_ms_mppe_key: bytes,
     request_authenticator: bytes,
 ) -> bytes:
-    """
+    """Decrypt an MS-MPPE-Key.
+
     Decrypts an MS-MPPE-Key using the provided RADIUS shared
     secret and Request-Authenticator.
 
@@ -143,7 +156,7 @@ def decrypt_mppe_key(
         - Checking the validity of the encrypted data length, request
           authenticator length, and salt.
         - Initializing an empty list to store intermediate decryption results.
-        - Constructing the initial hash input by concatenating the secret, 
+        - Constructing the initial hash input by concatenating the secret,
           authenticator, and salt.
         - Iterating over the cipher in 16-byte blocks and performing the
           following steps for each block:
@@ -151,13 +164,13 @@ def decrypt_mppe_key(
             - XORing the hash result with the current block to obtain the
               intermediate decrypted block.
             - Appending the intermediate decrypted block to the list.
-            - Updating the hash input by concatenating the secret and the 
+            - Updating the hash input by concatenating the secret and the
               current block.
         - Joining the intermediate decrypted blocks to form the
           decrypted message.
         - Extracting the length of the clear data and the actual clear
           data from the decrypted message.
-        - Performing additional checks on the length and padding of 
+        - Performing additional checks on the length and padding of
           the clear data.
         - Returning the clear data up to the specified length.
 
@@ -213,7 +226,7 @@ def decrypt_mppe_key(
     hash_input = radius_shared_secret + request_authenticator + salt
 
     for i in range(0, len(encrypted_data), BLOCK_SIZE):
-        encrypted_block = encrypted_data[i : i + BLOCK_SIZE]
+        encrypted_block = encrypted_data[i: i + BLOCK_SIZE]
         hash_value = md5(hash_input).digest()
         decrypted_block = xor_bits(hash_value, encrypted_block)
         decrypted_data_blocks.append(decrypted_block)
@@ -246,24 +259,25 @@ def calculate_msk(
     encrypted_ms_mppe_send_key: bytes,
     request_authenticator: bytes,
 ) -> bytes:
-    """
+    """Caclulate MSK.
+
     Calculate the Master Session Key (MSK) by decrypting the MS-MPPE-Recv-Key
     and MS-MPPE-Send-Key using the provided RADIUS shared secret and
     Request-Authenticator.
 
     Args:
-        radius_shared_secret (bytes): 
+        radius_shared_secret (bytes):
             - The RADIUS shared secret.
-        encrypted_ms_mppe_recv_key (bytes): 
+        encrypted_ms_mppe_recv_key (bytes):
             - The MS-MPPE-Recv-Key value in the Access-Accept.
-        encrypted_ms_mppe_send_key (bytes): 
+        encrypted_ms_mppe_send_key (bytes):
             - The MS-MPPE-Send-Key value in the Access-Accept.
-        request_authenticator (bytes): 
+        request_authenticator (bytes):
             - The Request-Authenticator value in the previous
               Access-Request packet.
 
     Returns:
-        bytes: The calculated MSK.
+        str: The calculated MSK, hexadecimal format.
 
     """
     decrypted_ms_mppe_recv_key = decrypt_mppe_key(
@@ -273,18 +287,16 @@ def calculate_msk(
         radius_shared_secret, encrypted_ms_mppe_send_key, request_authenticator
     )
 
-    master_session_key = (
+    master_session_key_bytes = (
         decrypted_ms_mppe_recv_key[:32] + decrypted_ms_mppe_send_key[:32]
     )
+    master_session_key_hex = master_session_key_bytes.hex()
 
-    return master_session_key
+    return master_session_key_hex
 
 
 def main():
-    """
-    Main entry point of the script
-
-    """
+    """Entry point."""
     try:
         arguments = parse_arguments()
 
@@ -306,8 +318,7 @@ def main():
             request_authenticator,
         )
 
-        print()
-        print(f"Master Session Key (MSK):  {msk.hex()}")
+        print(f"\nMaster Session Key (MSK):  {msk}")
 
     except ValueError as e:
         print(e)
