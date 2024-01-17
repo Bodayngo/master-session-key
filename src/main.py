@@ -5,17 +5,9 @@ from hashlib import sha1, sha256, sha384
 
 def sha1_prf(K, A, B, length):
     """
-    PTK = PRF-X(PMK, "Pairwise key expansion",
-            Min(AA, SA) || Max(AA, SA) ||
-            Min(ANonce, SNonce) || Max(ANonce, SNonce))
-
-    Input:
-        K (bytes): Key used for PRF
-            PMK when using PRF to derive PTK, for example
-        A (bytes): Unique label for each different purpose of the PRF 
-            "Pairwise key expansion" when using PRF to derive PTK, for example
-        B (bytes): Variable length string
-            "min(ap_mac, client_mac) + max(ap_mac, client_mac) + min(anonce, snonce) + max(anonce, snonce)" when using PRF to derive PTK, for example
+    References:
+        IEEE 802.11-2020 standard
+            Sub-clause 12.7.1.2 - PRF
     """
     i = 0
     R = b''
@@ -26,6 +18,11 @@ def sha1_prf(K, A, B, length):
     return R[0:length]
 
 def sha256_kdf(K, label, context, length):
+    """
+    References:
+        IEEE 802.11-2020 standard
+            Sub-clause 12.7.1.6.2 - Key derivation function (KDF)
+    """
     i = 1
     result = b''
     while i <= math.ceil((length * 8) / 256):
@@ -35,6 +32,11 @@ def sha256_kdf(K, label, context, length):
     return result[0:length]
 
 def sha384_kdf(K, label, context, length):
+    """
+    References:
+        IEEE 802.11-2020 standard
+            Sub-clause 12.7.1.6.2 - Key derivation function (KDF)
+    """
     i = 1
     result = b''
     while i <= math.ceil((length * 8) / 384):
