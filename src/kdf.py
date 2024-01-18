@@ -1,14 +1,16 @@
+"""
+References:
+    IEEE 802.11-2020 standard
+        Sub-clause 12.7.1.2 - PRF
+        Sub-clause 12.7.1.6.2 - Key derivation function (KDF)
+"""
+
 import hmac
 import struct
 import math
 from hashlib import sha1, sha256, sha384
 
 def sha1_prf(K, A, B, length):
-    """
-    References:
-        IEEE 802.11-2020 standard
-            Sub-clause 12.7.1.2 - PRF
-    """
     i = 0
     R = b''
     while i <= math.ceil((length * 8) / 160):
@@ -18,11 +20,6 @@ def sha1_prf(K, A, B, length):
     return R[0:length]
 
 def sha256_kdf(K, label, context, length):
-    """
-    References:
-        IEEE 802.11-2020 standard
-            Sub-clause 12.7.1.6.2 - Key derivation function (KDF)
-    """
     i = 1
     result = b''
     while i <= math.ceil((length * 8) / 256):
@@ -32,11 +29,6 @@ def sha256_kdf(K, label, context, length):
     return result[0:length]
 
 def sha384_kdf(K, label, context, length):
-    """
-    References:
-        IEEE 802.11-2020 standard
-            Sub-clause 12.7.1.6.2 - Key derivation function (KDF)
-    """
     i = 1
     result = b''
     while i <= math.ceil((length * 8) / 384):
