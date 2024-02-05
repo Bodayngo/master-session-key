@@ -21,10 +21,10 @@ The gen_msk.py script calculates the Master Sesssion Key (MSK) for an 802.1X/EAP
 ## Usage
 ```
 # Syntax
-$ python3 gen_msk.py <radius_shared_secret> <ms-mppe-recv-key> <ms-mppe-send-key> <request-authenticator>
+$ python3 get_msk.py <radius_shared_secret> <ms-mppe-recv-key> <ms-mppe-send-key> <request-authenticator>
 
 # Example
-$ python3 gen_msk.py radiussharedsecret 94f77e05a8610c7a2186f1a4d8d6fa328192619455dee03142669e1a1ff583b3593284d31c985edc78892a0414e54e527d55 9d662d78d01092890b516531291542373db99da21ac9d8f58d8e2583318486a911c7edfe7f17457f81c6a4169948936dabe4 a0fcd2bd28f624724726135fc97d22d9
+$ python3 get_msk.py radiussharedsecret 94f77e05a8610c7a2186f1a4d8d6fa328192619455dee03142669e1a1ff583b3593284d31c985edc78892a0414e54e527d55 9d662d78d01092890b516531291542373db99da21ac9d8f58d8e2583318486a911c7edfe7f17457f81c6a4169948936dabe4 a0fcd2bd28f624724726135fc97d22d9
 
 Master Session Key (MSK):  7dca16f8d83d5d34d39034654c9bd84cc57beae90c7639b0291b7e0846b9dffa501097cddf665fccfac7933504e86325461ded33ba080066ab1d6ed314950c58
 ```
